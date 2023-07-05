@@ -18,7 +18,7 @@ function getMissTime() {
   timeDiff -= minutes * (1000 * 60);
 
   var seconds = Math.floor(timeDiff / 1000);
-  missElement.innerHTML = `${days}天${hours}小时${minutes}分钟${seconds}秒`;
+  missElement.innerHTML = `跟我郑美女认识了差不多有${days}天${hours}小时${minutes}分钟${seconds}秒了`;
 }
-getMissTime();
-setInterval(getMissTime, 1000);
+// getMissTime();
+// setInterval(getMissTime, 1000);

@@ -1,24 +1,42 @@
-* {
-  padding: 0;
-  margin: 0;
-}
+  * {
+        padding: 0;
+        margin: 0;
+    }
 
-body {
-  margin: 0;
-  overflow: hidden;
-  background: black;
-  color: #ffffff;
-  position: relative;
-}
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+        color: #ffffff;
+        position: relative;
+    }
 
-canvas {
-  display: block;
-}
+    canvas {
+        display: block;
+    }
 
-#main {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+    #main {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+   #top_text{
+    opacity: 0;
+    transition: all 0.3s ease-in;
+    height: 30px;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: rgba(85, 56, 14, 0.5);
+    font-size: 18px;
+    font-weight: bold;
+   }
+  #top_text>span{
+    color: #fee9f0;
+  }
