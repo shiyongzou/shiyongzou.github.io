@@ -40,7 +40,7 @@ async function insertData(interview_time, city, ip) {
 async function updateData() {
   const { data, error } = await Supabase
     .from('user_list')
-    .update({ position: 'new_value' })
+    .update({ position: userPosition })
     .eq('id', _id);
 
   if (error) {
