@@ -7,10 +7,8 @@
        canvas.width = window.innerWidth;
        canvas.height = window.innerHeight;
    }
-
    // 初始化画布尺寸
    updateCanvasSize();
-
    // 监听窗口变化事件
    window.addEventListener('resize', updateCanvasSize);
 

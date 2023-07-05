@@ -5,7 +5,6 @@ function getPublicIP() {
 }
 function getLocationByIP(ip) {
   const apiUrl = `https://ipapi.co/${ip}/json/`;
-
   return fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
@@ -16,7 +15,6 @@ function getLocationByIP(ip) {
         latitude: data.latitude,
         longitude: data.longitude
       };
-
       return location;
     });
 }

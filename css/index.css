@@ -26,7 +26,6 @@
    #top_text{
     opacity: 0;
     transition: all 0.3s ease-in;
-    height: 30px;
     position: absolute;
     top: 15px;
     left: 50%;
