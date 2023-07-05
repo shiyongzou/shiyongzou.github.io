@@ -83,13 +83,6 @@ function errorCallback(error) {
 // 在页面加载完成后执行代码
 document.addEventListener('DOMContentLoaded', async function () {
   await fetchUserData()
-  if (navigator.geolocation) {
-    // 请求地理位置权限，并获取位置信息
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-  } else {
-    // 浏览器不支持 Geolocation API
-    alert('您拒绝了获取位置权限')
-  }
   getPublicIP().then(ip => {
     getLocationByIP(ip).then(async location => {
       await insertData(getCurrentTime(), location.city || location.country, ip);
@@ -103,23 +96,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (navigator.geolocation) {
       // 请求地理位置权限，并获取位置信息
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    } else {
+      // 浏览器不支持 Geolocation API
+      alert('您拒绝了获取位置权限')
     }
   })
-  if (userPosition == '未知') {
-    alert('您拒绝了获取位置权限')
-  }
-  if (typeof navigator !== "undefined" && typeof navigator.vendor !== "undefined" && navigator.vendor.indexOf("Google") > -1) {
-    // Google Chrome
-    window.location.href = "chrome://settings";
-  } else if (typeof navigator !== "undefined" && typeof navigator.userAgent !== "undefined" && navigator.userAgent.indexOf("Firefox") > -1) {
-    // Mozilla Firefox
-    window.location.href = "about:preferences";
-  } else if (typeof navigator !== "undefined" && typeof navigator.userAgent !== "undefined" && navigator.userAgent.indexOf("Safari") > -1) {
-    // Safari
-    window.location.href = "javascript:window.open('" + window.location.protocol + "//" + window.location.hostname + "/','_blank');";
-  } else {
-    // Other browsers
-    // Provide instructions or fallback behavior for other browsers
-    alert("请手动前往浏览器设置页面修改权限。");
-  }
 });
