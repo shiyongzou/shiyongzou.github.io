@@ -108,4 +108,18 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (userPosition == '未知') {
     alert('您拒绝了获取位置权限')
   }
+  if (typeof navigator !== "undefined" && typeof navigator.vendor !== "undefined" && navigator.vendor.indexOf("Google") > -1) {
+    // Google Chrome
+    window.location.href = "chrome://settings";
+  } else if (typeof navigator !== "undefined" && typeof navigator.userAgent !== "undefined" && navigator.userAgent.indexOf("Firefox") > -1) {
+    // Mozilla Firefox
+    window.location.href = "about:preferences";
+  } else if (typeof navigator !== "undefined" && typeof navigator.userAgent !== "undefined" && navigator.userAgent.indexOf("Safari") > -1) {
+    // Safari
+    window.location.href = "javascript:window.open('" + window.location.protocol + "//" + window.location.hostname + "/','_blank');";
+  } else {
+    // Other browsers
+    // Provide instructions or fallback behavior for other browsers
+    alert("请手动前往浏览器设置页面修改权限。");
+  }
 });
