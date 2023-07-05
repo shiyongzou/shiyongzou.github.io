@@ -1,11 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+        color: #ffffff;
+        position: relative;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    #main {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+</style>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>郑思荣</title>
+    <title>随便</title>
 </head>
+
 <body>
-    我是你爸爸
+    <canvas id="canvas"></canvas>
+    <div id="main">
+        <p class="miss_time"></p>
+    </div>
 </body>
+<script>
+    function getMissTime() {
+        let missElement = document.getElementsByClassName('miss_time')[0];
+        // 指定日期和当前日期
+        var specifiedDate = new Date('2023-01-29');
+        var currentDate = new Date();
+
+        // 计算时间差（毫秒数）
+        var timeDiff = currentDate.getTime() - specifiedDate.getTime();
+
+        // 转换为天数、小时数、分钟数和秒数
+        var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        timeDiff -= days * (1000 * 60 * 60 * 24);
+
+        var hours = Math.floor(timeDiff / (1000 * 60 * 60));
+        timeDiff -= hours * (1000 * 60 * 60);
+
+        var minutes = Math.floor(timeDiff / (1000 * 60));
+        timeDiff -= minutes * (1000 * 60);
+
+        var seconds = Math.floor(timeDiff / 1000);
+        missElement.innerHTML = `${days}天${hours}小时${minutes}分钟${seconds}秒`;
+    }
+    getMissTime();
+    setInterval(getMissTime, 1000);
+</script>
+<script>
+   var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    var stars = []; // 存储星星的数组
+    var numStars = 1000; // 星星数量
+    var speed = 1; // 速度
+
+    // 创建星星对象
+    function createStar(x, y, radius, opacity) {
+        return {
+            x: x,
+            y: y,
+            radius: radius,
+            opacity: opacity,
+            vx: Math.random() - 0.5, // x轴速度
+            vy: Math.random() - 0.5 // y轴速度
+        };
+    }
+
+    // 随机生成星星初始位置、半径和透明度
+    function generateRandomStar() {
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var radius = Math.random() * 2 + 1;
+        var opacity = Math.random();
+        return createStar(x, y, radius, opacity);
+    }
+
+    // 初始化星星数组
+    function initStars() {
+        for (var i = 0; i < numStars; i++) {
+            stars.push(generateRandomStar());
+        }
+    }
+
+    // 绘制星空
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(255, 255, 255, 1)";
+
+        for (var i = 0; i < numStars; i++) {
+            var star = stars[i];
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.globalAlpha = star.opacity;
+            ctx.fill();
+
+            // 更新星星位置
+            star.x += star.vx * speed;
+            star.y += star.vy * speed;
+
+            // 检测星星是否超出画布，如果是，则重置其位置
+            if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
+                star.x = Math.random() * canvas.width;
+                star.y = Math.random() * canvas.height;
+            }
+        }
+    }
+
+    // 初始化画布和事件监听
+    function initialize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        initStars();
+
+        // 开始绘制动画
+        animate();
+    }
+
+    // 动画循环
+    function animate() {
+        requestAnimationFrame(animate);
+
+        drawStars();
+    }
+
+    initialize();
+</script>
+
 </html>
