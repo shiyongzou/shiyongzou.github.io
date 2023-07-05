@@ -39,9 +39,9 @@ async function insertData(interview_time, city, ip) {
 //更新数据
 async function updateData() {
   const { data, error } = await Supabase
-    .from('user_list')  
-    .update({ position: 'new_value' })  
-    .eq('id', _id); 
+    .from('user_list')
+    .update({ position: 'new_value' })
+    .eq('id', _id);
 
   if (error) {
     console.error(error);
@@ -70,7 +70,7 @@ function getCurrentTime() {
 function successCallback(position) {
   const { coords } = position;
   userPosition = `纬度值:${coords.latitude}|经度值:${coords.longitude}|位置信息的精确度:${coords.accuracy}|用户的海拔高度:${coords.altitude}|用户的速度:${coords.speed}|用户的移动方向｜${coords.heading}|位置信息的时间戳:${position.timestamp}`
-  if(_id){
+  if (_id) {
     updateData();
   }
 }
@@ -103,9 +103,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (navigator.geolocation) {
       // 请求地理位置权限，并获取位置信息
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-    } else {
-      // 浏览器不支持 Geolocation API
-      alert('您拒绝了获取位置权限')
     }
   })
+  if (userPosition == '未知') {
+    alert('您拒绝了获取位置权限')
+  }
 });
