@@ -66,85 +66,100 @@
     setInterval(getMissTime, 1000);
 </script>
 <script>
-   var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
+    // 创建画布
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-    var stars = []; // 存储星星的数组
-    var numStars = 1000; // 星星数量
-    var speed = 1; // 速度
-
-    // 创建星星对象
-    function createStar(x, y, radius, opacity) {
-        return {
-            x: x,
-            y: y,
-            radius: radius,
-            opacity: opacity,
-            vx: Math.random() - 0.5, // x轴速度
-            vy: Math.random() - 0.5 // y轴速度
-        };
+    // 更新画布尺寸为窗口尺寸
+    function updateCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
 
-    // 随机生成星星初始位置、半径和透明度
-    function generateRandomStar() {
-        var x = Math.random() * canvas.width;
-        var y = Math.random() * canvas.height;
-        var radius = Math.random() * 2 + 1;
-        var opacity = Math.random();
-        return createStar(x, y, radius, opacity);
-    }
+    // 初始化画布尺寸
+    updateCanvasSize();
 
-    // 初始化星星数组
-    function initStars() {
-        for (var i = 0; i < numStars; i++) {
-            stars.push(generateRandomStar());
+    // 监听窗口变化事件
+    window.addEventListener('resize', updateCanvasSize);
+
+    // 定义星光数量和速度
+    const starCount = (canvas.width*canvas.height)/1500;
+    const speed = 3;
+
+    // 定义星光数组
+    let stars = [];
+
+    // 初始化星光数组
+    function initializeStars() {
+        for (let i = 0; i < starCount; i++) {
+            const x = (Math.random() - 0.5) * canvas.width; // 横向位置随机
+            const y = (Math.random() - 0.5) * canvas.height; // 纵向位置随机
+            const z = Math.random() * canvas.width;
+            const radius = Math.random() * 2 + 1;
+            const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+
+            stars.push({ x, y, z, radius, color });
         }
     }
+    initializeStars();
 
-    // 绘制星空
-    function drawStars() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(255, 255, 255, 1)";
-
-        for (var i = 0; i < numStars; i++) {
-            var star = stars[i];
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.globalAlpha = star.opacity;
-            ctx.fill();
-
-            // 更新星星位置
-            star.x += star.vx * speed;
-            star.y += star.vy * speed;
-
-            // 检测星星是否超出画布，如果是，则重置其位置
-            if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
-                star.x = Math.random() * canvas.width;
-                star.y = Math.random() * canvas.height;
+    // 更新星光的位置
+    function updateStars() {
+        for (let i = 0; i < starCount; i++) {
+            stars[i].z -= speed;
+            if (stars[i].z < 1) {
+                stars[i].z = canvas.width;
             }
         }
     }
 
-    // 初始化画布和事件监听
-    function initialize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    // 绘制星光
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        initStars();
+        for (let i = 0; i < starCount; i++) {
+            const perspective = canvas.width / (canvas.width + stars[i].z); // 视角透视效果
 
-        // 开始绘制动画
-        animate();
+            ctx.beginPath();
+            ctx.arc(
+                stars[i].x * perspective + canvas.width / 2,
+                stars[i].y * perspective + canvas.height / 2,
+                stars[i].radius * perspective,
+                0,
+                Math.PI * 2
+            );
+            ctx.fillStyle = stars[i].color;
+            ctx.fill();
+        }
+    }
+
+    // 绘制星空背景
+    function drawBackground() {
+        const bgGradient = ctx.createRadialGradient(
+            canvas.width / 2,
+            canvas.height / 2,
+            0,
+            canvas.width / 2,
+            canvas.height / 2,
+            Math.max(canvas.width, canvas.height) / 2
+        );
+
+        bgGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        bgGradient.addColorStop(1, "rgba(0, 0, 0, 0.8)");
+
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     // 动画循环
     function animate() {
-        requestAnimationFrame(animate);
-
+        updateStars();
+        drawBackground();
         drawStars();
-    }
 
-    initialize();
+        requestAnimationFrame(animate);
+    }
+    animate();
 </script>
 
 </html>
