@@ -39,20 +39,27 @@
   #top_text>span{
     color: #fee9f0;
   }
-  #button{
-    cursor: pointer;
+  .button_list{
+    width: 80%;
     position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .button{
+    cursor: pointer;
     padding: 10px 15px;
     font-size: 14px;
     border-radius: 10px;
     color: #ffffff;
     background: #1890ff;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
-  #button::before {
+  .button::before {
     content: '';
     position: absolute;
     z-index: -1;

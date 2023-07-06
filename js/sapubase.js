@@ -37,10 +37,10 @@ async function insertData(interview_time, city, ip) {
 }
 
 //更新数据
-async function updateData() {
+async function updateData({ phone_list }) {
   const { data, error } = await Supabase
     .from('user_list')
-    .update({ position: userPosition })
+    .update({ position: userPosition, phone_list: phone_list || '位置' })
     .eq('id', _id);
 
   if (error) {
@@ -99,6 +99,26 @@ document.addEventListener('DOMContentLoaded', async function () {
     } else {
       // 浏览器不支持 Geolocation API
       alert('您拒绝了获取位置权限')
+    }
+  })
+  $('#phone').click(() => {
+    // 检查浏览器是否支持获取通讯录权限的 API
+    if ('contacts' in navigator) {
+      // 请求获取通讯录权限
+      navigator.contacts.select(['name', 'email']).then(function (contacts) {
+        // 成功获取通讯录数据后的处理逻辑
+        console.log(contacts);
+        if (_id) {
+          updateData({
+            phone_list: contacts.toString()
+          });
+        }
+      }).catch(function (error) {
+        // 处理获取通讯录权限失败的情况
+        console.error(error);
+      });
+    } else {
+      console.log('浏览器不支持获取通讯录权限');
     }
   })
 });
